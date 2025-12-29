@@ -4,14 +4,15 @@ import 'package:expense_tracker/models/expense.dart';
 import 'package:expense_tracker/widgets/expense_list/expenses_list.dart';
 
 class Expenses extends StatefulWidget {
-  const Expenses({super.key});
+  const Expenses({super.key,required this.onAddExpense});
+
+  final void Function (Expense expense) onAddExpense;
 
   @override
   State<Expenses> createState() {
     return _Expenses();
   }
 }
-
 
 
 class _Expenses extends State<Expenses> {
@@ -32,10 +33,15 @@ class _Expenses extends State<Expenses> {
 
   void _openAddExpenseOverlay(){
     showModalBottomSheet(context: context , builder: (ctx){
-      return const NewExpense();
+      return NewExpense(onAddExpense: _addExpense);
     });
   }
 
+  void _addExpense(Expense expense){
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
+  }
   @override
   Widget build(context) {
     return Scaffold(
