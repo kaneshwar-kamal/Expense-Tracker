@@ -32,7 +32,10 @@ class _Expenses extends State<Expenses> {
   ];
 
   void _openAddExpenseOverlay(){
-    showModalBottomSheet(context: context , builder: (ctx){
+    showModalBottomSheet(
+      isScrollControlled: true, //it will take the full screne 
+      context: context , 
+      builder: (ctx){
       return NewExpense(onAddExpense: _addExpense);
     });
   }
@@ -42,6 +45,14 @@ class _Expenses extends State<Expenses> {
       _registeredExpenses.add(expense);
     });
   }
+
+  void _removeExpense(Expense expense){
+    setState(){
+      _registeredExpenses.remove(expense);
+    }
+  }
+
+
   @override
   Widget build(context) {
     return Scaffold(
@@ -52,7 +63,7 @@ class _Expenses extends State<Expenses> {
       body: Column(
         children: [
           Text("the chart"),
-          Expanded(child: ExpensesList(expenses: _registeredExpenses)),
+          Expanded(child: ExpensesList(expenses: _registeredExpenses, onRemoveExpense: _removeExpense)),
         ],
       ),
     );
